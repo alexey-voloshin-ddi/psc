@@ -1,0 +1,22 @@
+{% load static %}
+<input type="hidden" id="category-input" name="{{ name }}" value='{% if value %}{ {% for x in value %}"level-{{ forloop.counter0 }}": {{ x.id }}{% if not forloop.last %},{% endif %}{% endfor %}}{% else %}{}{% endif %}'>
+<br>
+<br>
+<div id="category">
+    <div id="category-container-0" data-level="0">
+        <select id="base-category-select">
+            <option value="">------</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+
+<a href="#" id="add-more">Add more</a>
+
+<script>
+    var max_category_count = {{ max_cat_count }};
+</script>
+
+<script src="{% static "js/widget/category_widget.js" %}"></script>

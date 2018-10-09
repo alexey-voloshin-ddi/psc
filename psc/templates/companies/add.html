@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if not user.get_account.is_active %}
+        <h1>Seams your account not active</h1>
+    {% elif not user.confirmed %}
+        <h1>You not confirmed yet.</h1>
+    {% else %}
+        {% if error %}
+            <h1>{{ error }}</h1>
+            <a href="/companies/">Back</a>
+        {% else %}
+            <form method="POST">{% csrf_token %}
+                {{ office_form.management_form }}
+                <table>
+                    {{ form.as_table }}
+{#                    <tr>#}
+{#                        <td>Offices: </td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td colspan="2" id="offices">#}
+{#                            {% for form in office_form.forms %}#}
+{#                                <table>#}
+{#                                    <tr>#}
+{#                                        {% for field in form %}#}
+{#                                            {% if not field.is_hidden %}#}
+{#                                                <th>{{ field.label }}</th>#}
+{#                                                <td>{{ field.errors }}{{ field }}</td>#}
+{#                                            {% endif %}#}
+{#                                        {% endfor %}#}
+{#                                        {% for hidden in form.hidden_fields %}#}
+{#                                            {{ hidden }}#}
+{#                                        {% endfor %}#}
+{#                                    </tr>#}
+{#                                </table>#}
+{#                            {% endfor %}#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                    <tr>#}
+{#                        <td>#}
+{#                            <a href="#" id="add-more-offices">Add more Offices</a><br>#}
+{#                        </td>#}
+{#                    </tr>#}
+                    <tr>
+                        <td colspan="10">
+                            <input class="btn btn-primary" type="submit" value="Save">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        {% endif %}
+    {% endif %}
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/company/add.js' %}"></script>
+{% endblock javascript %}

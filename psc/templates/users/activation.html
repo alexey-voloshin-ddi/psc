@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if error %}
+        <h3>Key expire or does not exist.</h3>
+    {% else %}
+        <h3>Your account has been activated. You can login now.</h3>
+    {% endif %}
+{% endblock content %}

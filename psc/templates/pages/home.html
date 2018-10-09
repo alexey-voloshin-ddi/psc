@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if not user.is_authenticated %}
+    Please Login to use system
+    {% endif %}
+{% endblock content %}

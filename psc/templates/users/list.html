@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="row">
+        {% if not user.get_account.is_active %}
+            <h1>Seams your account not active</h1>
+        {% elif not user.confirmed %}
+                <h1>You are not confirmed yet.</h1>
+        {% else %}
+        <div class="col-md-9">
+            <h3>Users:</h3>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Access Level</th>
+                    <th>Controls</th>
+                </tr>
+                {% for user_l in user_list %}
+                <tr>
+                    <td>{{ user_l.name|default:user_l.username }}</td>
+                    <td>{{ user_l.email }}</td>
+                    <td>{{ user_l.get_access_level_display }}</td>
+                    <td>
+                        {% if not user_l.confirmed %}
+                            <a href="#" class="btn btn-success confirm-user" data-id="{{ user_l.id }}">Confirm</a>
+                        {% endif %}
+                        {% if not user_l.is_owner and user_l.confirmed and user.is_owner %}
+                            <a href="#" class="btn btn-primary make-owner" data-id="{{ user_l.id }}">Make owner</a>
+                        {% endif %}
+                        {% if user.is_owner and user_l.confirmed %}
+                            <a href="#" class="btn btn-danger terminate-user" data-id="{{ user_l.id }}">Terminate access</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% if invitation_list %}
+            <h3>Invites:</h3>
+            <table class="table">
+                <tr>
+                    <th>Email</th>
+                    <th>Controls</th>
+                </tr>
+                {% for invite in invitation_list %}
+                <tr>
+                    <td>{{ invite.email }}</td>
+                    <td>
+                        {% if user.is_owner %}
+                            <a href="#" class="btn btn-danger cancel-invite" data-id="{{ invite.id }}">Cancel</a>
+                            <button class="btn btn-primary resend-invite" data-id="{{ invite.id }}">Resend</button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <br>
+            {% if user.is_owner %}
+                <a class="btn btn-primary" href="/users/invite/">Invite User</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/users/list.js' %}"></script>
+{% endblock javascript %}

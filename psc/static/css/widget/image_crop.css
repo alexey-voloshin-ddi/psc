@@ -1,0 +1,93 @@
+.img-preview {
+  overflow: hidden;
+  border: 1px solid black;
+}
+.hidden {
+  display: none;
+}
+.bordered {
+  border: 1px solid black;
+}
+.image-box {
+  float: left;
+  margin: 10px;
+  position: relative;
+}
+.add-image {
+  overflow: hidden;
+}
+
+.crop-modal .crop-modal-head h3{
+  display: inline-block;
+}
+.hidden-visibility {
+  visibility: hidden;
+}
+.modal-bg {
+  background-color: black;
+  opacity: 0.3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+.crop-modal {
+  position: absolute;
+  background: white;
+  border: 1px solid grey;
+  z-index: 101;
+  left: 20%;
+  right: 20%;
+  top: 100px;
+  padding: 10px;
+  min-height: 700px;
+}
+#close-modal {
+  float: right;
+}
+.crop-box {
+  float: left;
+  width: 80%;
+  min-height: 100px;
+}
+.action-box {
+  float: left;
+  width: 20%;
+}
+.img-btn {
+  border: 1px solid black;
+  text-align: center;
+  height: 30px;
+  width: 30px;
+  line-height: 30px;
+  position: absolute;
+  background-color: white;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 12px;
+}
+.edit {
+  right: 31px;
+  top: 0;
+}
+.delete {
+  right: 0;
+  top: 0;
+}
+.error {
+  color: red;
+}
+#ajax-spinner {
+  position: absolute;
+  top: 35%;
+  left: 35%;
+}
+
+.image-added {
+  overflow: hidden;
+  float: left;
+  margin: 10px;
+  position: relative;
+}

@@ -1,0 +1,90 @@
+<div>
+    <h1>Product Added:</h1>
+    {% regroup product_added by created_by.name as added_products %}
+
+    <ul>
+    {% for added_product in added_products  %}
+        <li>{{ added_product.grouper }}
+        <ul>
+            {% for product in added_product.list %}
+              <li>{{ product.created_at }} Product Name: {{ product.name }}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h1>Product Edited:</h1>
+    {% regroup product_edited by edited_by.name as editted_products %}
+
+    <ul>
+    {% for edited_product in editted_products  %}
+        <li>{{ edited_product.grouper }}
+        <ul>
+            {% for product in edited_product.list %}
+              <li>{{ product.edited_at }} Product Name: {{ product.name }}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h1>Company Added:</h1>
+    {% regroup companies_added by created_by.name as added_companies %}
+
+    <ul>
+    {% for added_company in added_companies  %}
+        <li>{{ added_company.grouper }}
+        <ul>
+            {% for company in added_company.list %}
+              <li>{{ company.created_at }} Company Name: {{ company.name }}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h1>Company Edited:</h1>
+    {% regroup companies_edited by edited_by.name as edited_companies %}
+
+    <ul>
+    {% for edited_company in edited_companies  %}
+        <li>{{ added_company.grouper }}
+        <ul>
+            {% for company in edited_company.list %}
+              <li>{{ company.edited_at }} Company Name: {{ company.name }}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <h1>Users Added:</h1>
+    {% regroup users_added by created_by.name as created_users %}
+
+    <ul>
+    {% for created_user in created_users  %}
+        <li>{{ created_user.grouper }}
+        <ul>
+            {% for user in created_user.list %}
+              <li>{{ user.created_at }} User Name: {% if user.name %}{{ user.name }}{% else %}{{ user.username }}{% endif %}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+    <h1>Users Edited:</h1>
+    {% regroup users_edited by edited_by.name as edited_users %}
+
+    <ul>
+    {% for edited_user in edited_users  %}
+        <li>{{ edited_user.grouper }}
+        <ul>
+            {% for user in edited_user.list %}
+              <li>{{ user.edited_at }} User Name: {% if user.name %}{{ user.name }}{% else %}{{ user.username }}{% endif %}</li>
+            {% endfor %}
+        </ul>
+        </li>
+    {% endfor %}
+    </ul>
+</div>

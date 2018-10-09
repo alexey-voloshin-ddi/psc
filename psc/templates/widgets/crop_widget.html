@@ -1,0 +1,128 @@
+{% load staticfiles %}
+
+<script src="{% static "js/cropper.min.js" %}"></script>
+<link  href="{% static "css/cropper.min.css" %}" rel="stylesheet">
+<link  href="{% static "css/widget/image_crop.css" %}" rel="stylesheet">
+
+<style>
+    .images-container{
+        height: {{ sizes.pr.lg.height|add:80}}px;
+    }
+    .lg-preview, .max-size{
+        width: {{ sizes.pr.lg.width }}px;
+        height: {{ sizes.pr.lg.height }}px;
+    }
+    .md-preview {
+        width: {{ sizes.pr.md.width }}px;
+        height: {{ sizes.pr.md.height }}px;
+    }
+    .sm-preview {
+        width: {{ sizes.pr.sm.width }}px;
+        height: {{ sizes.pr.sm.height }}px;
+    }
+    .add-image {
+        line-height: {{ sizes.pr.lg.height }}px;
+        font-size: 50px;
+        text-align: center;
+    }
+</style>
+
+<div class="images-container" id="cropper-images">
+    <input name="{{ name }}" type="hidden" id="id_{{ name }}"{% if value %} value='{{ value }}'{% endif %}>
+    {% if is_single %}
+        {% if not images %}
+            <div class="image-box max-size">
+                <div id="add" class="max-size bordered add-image">
+                    <span id="thumbnail-text">+</span>
+                </div>
+            </div>
+        {% else %}
+            {% for image in images %}
+                <div class="image-box max-size">
+                    {% if image.is_edited_outside and is_single and is_company %}
+                        <span class="error">Image eddited outside.</span>
+                    {% endif %}
+                    <div class="max-size bordered add-image" data-id="{{ image.id }}" id="image-id-{{ image.product_position }}" data-image-id="{{ image.product_position }}">
+
+                        {% if image.is_fake %}
+                            <img src="{% static 'images/image_placeholder.jpg' %}">
+                        {% else %}
+                            <img src="{{ MEDIA_URL }}{{ image.path }}">
+                        {% endif %}
+
+                        <div class="img-btn edit">Edit</div>
+                        <div class="img-btn delete">Del</div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        {% for image in images %}
+            <div class="max-size image-added" data-id="{{ image.id }}" id="image-id-{{ image.product_position }}"  style="width: 202px; height: 202px;" data-image-id="{{ image.product_position }}">
+                {% if image.is_edited_outside %}
+                    <span class="error">Image eddited outside.</span>
+                {% endif %}
+
+                {% if image.is_fake %}
+                    <img src="{% static 'images/image_placeholder.jpg' %}">
+                {% else %}
+                    <img src="{{ MEDIA_URL }}{{ image.path }}">
+                {% endif %}
+                <div class="img-btn edit">Edit</div>
+                <div class="img-btn delete">Del</div>
+            </div>
+        {% endfor %}
+        <div class="image-box max-size">
+            <div id="add" class="max-size bordered add-image">
+                <span id="thumbnail-text">+</span>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<div class="crop-modal hidden" id="modal">
+    <div class="crop-modal-head">
+        <h3>Add Image</h3>
+        <a href="#" id="close-modal">Close</a>
+        <hr>
+    </div>
+    <div class="crop-modal-body">
+        <div class="crop-box">
+            <img id="image_to_crop" width="100%" src="">
+            <img id="ajax-spinner" class="hidden" src="{% static 'images/ajax-loader.gif' %}">
+        </div>
+        <div class="action-box">
+            <br>
+            <span class="error hidden" id="image-format-error">Wrong file format. Allow images only (jpg, jpeg, png, gif)</span><br>
+            <button type="button" id="upload-image">Upload Image</button>
+            <input type="file" class="hidden" id="uploaded-image">
+            <br>
+            <br>
+            <button type="button" id="save" disabled="disabled">Save</button>
+            <hr>
+            <div class="preview-box">
+                <br>
+                <div class="img-preview lg-preview" id="to-clone"></div>
+                <br>
+                <br>
+                <div class="img-preview md-preview"></div>
+                <br>
+                <br>
+                <div class="img-preview sm-preview"></div>
+            </div>
+        </div>
+        <img id="image_to_crop" src="" class="hidden">
+    </div>
+    <div class="crop-modal-footer">
+    </div>
+</div>
+<div class="modal-bg hidden" id="modal-bg"></div>
+
+<script>
+    var input_name = "{{ name }}";
+    var is_single = {% if is_single %}true{% else %}false{% endif %};
+    var image_id = {{ images.last.product_position|default:-1 }} + 1;
+    var is_company = {% if is_company %}true{% else %}false{% endif %};
+</script>
+
+<script src="{% static "js/widget/images_crop.js" %}"></script>

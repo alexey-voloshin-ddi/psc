@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    {% if error %}
+        <h1>Invitation key expire or does not exist.</h1>
+    {% else %}
+    <form method="post">{% csrf_token %}
+        {{ form.non_field_errors }}
+        <table>
+            <tr>
+                <td width="20%">{{ form.first_name.label }}</td>
+                <td>{{ form.first_name.errors }}{{ form.first_name }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.last_name.label }}</td>
+                <td>{{ form.last_name.errors }}{{ form.last_name }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.email.label }}</td>
+                <td>{{ form.email.errors }}{{ form.email }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.phone.label }}</td>
+                <td>{{ form.phone.errors }}{{ form.phone }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.password.label }}</td>
+                <td>{{ form.password.errors }}{{ form.password }}</td>
+            </tr>
+
+            <tr>
+                <td>{{ form.confirm_password.label }}</td>
+                <td>{{ form.confirm_password.errors }}{{ form.confirm_password }}</td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <hr>
+                    <div style="height: 200px; width: 100%; overflow: scroll;">
+                        A porttitor proin amet. Sagittis augue rhoncus lectus in risus eu vut etiam massa cursus nec! Et, urna parturient vut? Dignissim facilisis scelerisque a! Mattis integer nec est, augue dolor! Phasellus turpis sagittis, aliquam, urna risus! Rhoncus lorem aliquet massa, et ut pellentesque lundium cum a amet natoque rhoncus tincidunt turpis. Pulvinar turpis nec, tempor massa turpis tincidunt velit ut, magnis mauris placerat, vel, odio hac nunc augue ut dis. Tortor aenean urna ultricies porta ac sociis porta sit ultrices! Placerat, sit amet lectus lundium? Scelerisque nec, massa amet sociis, integer? Sit, amet nec, sit massa, odio aliquam nunc non diam rhoncus odio arcu? Pellentesque! Turpis ut magna! Parturient tincidunt sagittis cras? Adipiscing duis turpis montes? Sit, a eu porta.
+
+                        Integer sagittis, turpis odio urna. Adipiscing rhoncus. Dolor sit risus nec sed porttitor tristique mid et nisi! Pellentesque adipiscing, sit porttitor elementum tempor, rhoncus porta et est! Platea mid! Enim porta? Penatibus nec? Adipiscing, odio! Elementum, aenean habitasse sit sit! In? Ultrices scelerisque ut, auctor et adipiscing sit ac nisi duis dapibus mus lacus, duis ridiculus nunc ac sit. Penatibus in, nec vut adipiscing. Porttitor ridiculus penatibus vel, sed, nunc mauris, nec tincidunt magnis, sagittis augue augue? Integer aliquam turpis vel cum. Platea diam eu scelerisque et. Arcu dis, tristique pellentesque sed cum tempor augue placerat nisi sociis diam? Turpis aliquet quis est. In? Amet urna, massa? Eros velit lorem enim porta nunc, est mid nec augue aliquam sit.
+                    </div>
+                    <hr>
+                    {{ form.agree.errors }}
+                    <label for="id_agree">{{ form.agree.label }}</label>{{ form.agree }}
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="submit" value="Register">
+                </td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+</div>
+{% endblock content %}
+

@@ -1,0 +1,13 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block submit_buttons_bottom %}
+    {% if original %}
+        <div class="submit-row">
+           <input type="button" value="{% trans 'Resend invitation' %}"
+                  onclick="location.href='{% url 'users:resend-invitation' original.id %}'" />
+        </div>
+    {% endif %}
+
+    {{ block.super }}
+{% endblock %}

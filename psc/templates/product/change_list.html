@@ -1,0 +1,60 @@
+{% load i18n static %}
+{% load psc_admin %}
+{% if result_hidden_fields %}
+<div class="hiddenfields">{# DIV for HTML validation #}
+{% for item in result_hidden_fields %}{{ item }}{% endfor %}
+</div>
+{% endif %}
+{% if results %}
+<div class="results">
+<table id="result_list">
+<thead>
+<tr>
+{% for header in result_headers %}
+<th scope="col" {{ header.class_attrib }}>
+   {% if header.sortable %}
+     {% if header.sort_priority > 0 %}
+       <div class="sortoptions">
+         <a class="sortremove" href="{{ header.url_remove }}" title="{% trans "Remove from sorting" %}"></a>
+         {% if num_sorted_fields > 1 %}<span class="sortpriority" title="{% blocktrans with priority_number=header.sort_priority %}Sorting priority: {{ priority_number }}{% endblocktrans %}">{{ header.sort_priority }}</span>{% endif %}
+         <a href="{{ header.url_toggle }}" class="toggle {% if header.ascending %}ascending{% else %}descending{% endif %}" title="{% trans "Toggle sorting" %}"></a>
+       </div>
+     {% endif %}
+   {% endif %}
+   <div class="text">{% if header.sortable %}<a href="{{ header.url_primary }}">{{ header.text|capfirst }}</a>{% else %}<span>{{ header.text|capfirst }}</span>{% endif %}</div>
+   <div class="clear"></div>
+</th>{% endfor %}
+</tr>
+</thead>
+<tbody>
+{% for result in results %}
+{% if result.form.non_field_errors %}
+    <tr><td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td></tr>
+{% endif %}
+<tr class="{% cycle 'row1' 'row2' %}">
+    {% if 'icon-no' in result.7 %}
+        <th class="field-name">
+        </th>
+        <th class="field-name">
+            Image in Progress. Do not touch it!
+        </th>
+        <th>
+
+        </th>
+    {% else %}
+        {{ result.0 }}
+        {{ result.1 }}
+        {{ result.2 }}
+    {% endif %}
+    {{ result.3 }}
+    {{ result.4 }}
+    {{ result.5 }}
+    {{ result.6 }}
+    {{ result.7 }}
+</tr>
+{#<tr class="row1">{{ result.1 }}</tr>#}
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endif %}

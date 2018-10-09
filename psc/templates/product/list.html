@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if not user.get_account.is_active %}
+        <h1>Seams your account not active</h1>
+    {% elif not user.confirmed %}
+        <h1>You not confirmed yet.</h1>
+    {% else %}
+    <div class="row">{% csrf_token %}
+        <div class="col-md-9">
+            <table class="table">
+                <tr>
+                    <td>Name</td>
+                    <td>Created By</td>
+                    <td>Controls</td>
+                </tr>
+                {% for product in product_list %}
+                <tr {% if not product.is_active %}class="table-active"{% endif %}>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.created_by }}</td>
+                    <td>
+                        {% if product.is_active %}
+                            <a href="/products/{{ product.id }}/edit/" class="btn btn-success">Edit</a>
+                            <a href="#" class="btn btn-danger delete" data-id="{{ product.id }}">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/products/create/" class="btn btn-primary">Create Product</a>
+        </div>
+    </div>
+    {% endif %}
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/product/list.js' %}"></script>
+{% endblock javascript %}

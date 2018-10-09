@@ -1,0 +1,10 @@
+<div>
+  <h2>Recent Notifications:</h2>
+  <ul>
+    {% for notification in notifications %}
+      <li>
+        {{ notification.created_at }} {{ notification.instance_name }} {{ notification.get_type_display }}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

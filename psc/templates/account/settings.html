@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-9">
+            <form method="post">{% csrf_token %}
+                {% if user.get_account.is_active and user.is_owner %}
+                    {{ contact_information_form.management_form }}
+                    <table class="table">
+                        {{ form.as_table }}
+                        <tr>
+                            <td colspan="2">Contact Information: </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" id="offices">
+                                {% for form in contact_information_form.forms %}
+                                    <table>
+                                        <tr>
+                                            {% for field in form %}
+                                                {% if not field.is_hidden %}
+                                                    <th>{{ field.label }}</th>
+                                                    <td>{{ field.errors }}{{ field }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% for hidden in form.hidden_fields %}
+                                                {{ hidden }}
+                                            {% endfor %}
+                                        </tr>
+                                    </table>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#" id="add-more-contact-information">Add more Contact Information</a><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10">
+                                <input class="btn btn-primary" type="submit" value="Save">
+                            </td>
+                        </tr>
+                    </table>
+                {% elif not user.is_owner %}
+                    <h1>Only owner can change account.</h1>
+                {% elif not user.confirmed %}
+                    <h1>You not confirmed yet.</h1>
+                {% else %}
+                    <h1>Seams your account not active</h1>
+                {% endif %}
+            </form>
+        </div>
+        <div class="col-md-3">
+            {% if user.is_staff %}
+                <br>
+                <a href="{% url 'accounts:admin_summary' %}" class="btn btn-primary">Test Admin Summary</a>
+                <br><br>
+                <a href="{% url 'accounts:owner_summary' %}" class="btn btn-primary">Test Owner Summary</a>
+                <br><br>
+                <a href="{% url 'accounts:log_summary' %}" class="btn btn-primary">Test Summary Log</a>
+                <br><br>
+            {% endif %}
+            {% if user.is_owner %}
+                {% if user.get_account.is_active %}
+                    <a class="btn btn-danger" id="delete-account" href="#">Delete Account</a>
+                {% else %}
+                    <a class="btn btn-success" id="restore-account" href="#">Restore Account</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/account/add.js' %}"></script>
+{% endblock javascript %}

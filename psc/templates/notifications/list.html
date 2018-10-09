@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% csrf_token %}
+    {% if notification_list %}
+    <table width="100%" id="notification">
+        {% for notification in notification_list %}
+            <tr id="notification-row-{{ notification.id }}" class="{% if notification.status == 1 %} notification-new{% elif notification.status == 3 %} notification-archived{% endif %}">
+                <td width="40%">{{ notification.instance_name }}</td>
+                <td width="20%">{{ notification.get_type_display }}</td>
+                <td width="20%" id="notification-status-{{ notification.id }}">
+                    {{ notification.get_status_display }}
+                </td>
+                <td>
+                    {% if notification.status != 3 %}
+                        <a class="btn btn-primary archive" href="#" data-id="{{ notification.id }}">Archive</a>
+                    {% endif %}
+                </td>
+                <td align="center">
+                    <a class="btn btn-danger delete" href="#" data-id="{{ notification.id }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <h1>No Notifications available</h1>
+    {% endif %}
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/notifications/list.js' %}"></script>
+{% endblock javascript %}

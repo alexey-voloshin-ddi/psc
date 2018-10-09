@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% csrf_token %}
+    <div class="row">
+        {% if not user.get_account.is_active %}
+            <h1>Seams your account not active</h1>
+        {% elif not user.confirmed %}
+            <h1>You not confirmed yet.</h1>
+        {% else %}
+        <div class="col-md-9">
+            <br>
+            <table class="table">
+                <tr>
+                    <th>Name</th>
+                    <th>Web site</th>
+                    <th>Short Description</th>
+                    <th>Controls</th>
+                </tr>
+                {% for company in company_list %}
+                <tr {% if not company.is_active %}class="table-active"{% endif %}>
+                    <td>
+                        {{ company.name }}
+                    </td>
+                    <td>
+                        {{ company.website }}
+                    </td>
+                    <td>
+                        {{ company.short_description }}
+                    </td>
+
+                    <td width="25%">
+                        {% if company.is_active %}
+                            <a class="btn btn-success" href="/companies/{{ company.id }}/edit/">Edit</a>
+                            {% if user.is_owner %}
+                                <a class="btn btn-danger delete" href="#" data-id="{{ company.id }}">Delete</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="col-md-3">
+            <br>
+            {% if user.is_owner %}
+                <a href="/companies/create/" class="btn btn-primary">Add new company</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/company/list.js' %}"></script>
+{% endblock javascript %}
